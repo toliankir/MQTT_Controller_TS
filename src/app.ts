@@ -2,12 +2,12 @@ import express, { Application } from 'express';
 import { mqttInit } from './mqtt';
 import storage from './test-storage';
 
-mqttInit();
+// mqttInit();
 
 const app: Application = express();
 app.get('/', (req, res) => {
     res.send('Hello');
-    console.log(storage.getStorage());
+    // console.log(storage.getStorage());
 });
 
 app.get('/api', (req, res) => {

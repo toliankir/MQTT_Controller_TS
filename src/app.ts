@@ -4,12 +4,12 @@ import storage from './test-storage';
 
 mqttInit();
 
-const PORT = process.env.PORT || 5000;
-const app: Application = express();
+// const PORT = process.env.PORT || 5000;
+// const app: Application = express();
 
 
-app.get('/', (req, res) => {
-    res.send('Hello');
-});
+// app.get('/', (req, res) => {
+//     res.send('Hello');
+// });
 
-app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
+// app.listen(PORT, () => console.log(`Server is running on ${PORT}`));

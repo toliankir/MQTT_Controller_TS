@@ -1,10 +1,10 @@
-export interface Storage {
-    save(mqttEvent: MqttEvent): boolean
-    getStorage(): MqttEvent[]
+export interface DeviceStateStorage {
+    save(mqttEvent: MqttItem): boolean
+    getStorage(): MqttItem[]
     getValue(deviceId: string, parameter: string): any;
 }
 
-export interface MqttEvent {
+export interface MqttItem {
     deviceId: string,
     deviceType: string,
     parameter: string,

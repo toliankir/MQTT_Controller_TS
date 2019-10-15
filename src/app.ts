@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
-import { mqttInit } from './mqtt';
-import storage from './test-storage';
+//import { mqttInit } from './mqtt';
+//import storage from './test-storage';
 
 // mqttInit();
 
@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
     // console.log(storage.getStorage());
 });
 
-app.get('/api', (req, res) => {
+/*app.get('/api', (req, res) => {
     res.send(JSON.stringify(storage.getStorage()));
 });
 
@@ -41,6 +41,6 @@ app.get('/test', (req, res) => {
     console.log('----------------');
 
 });
-
+*/
 
 app.listen(5000, () => console.log('Server is running'));

@@ -21,7 +21,6 @@ export function mqttInit() {
     });
 
     mqttClient.on('message', (topic, message) => {
-        console.log(message);
         const [deviceId, deviceType] = topic.toString().split('/');
         const msgObj = JSON.parse(message.toString());
         for (let el in msgObj) {

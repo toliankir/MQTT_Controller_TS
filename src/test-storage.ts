@@ -1,6 +1,6 @@
-import { DeviceStateStorage, MqttItem } from './storage_contract';
+import { DeviceStateStorage, MqttItem } from './state_contract';
 
-class TestStorage implements DeviceStateStorage {
+class TestStateStorage implements DeviceStateStorage {
     localStorage: MqttItem[] = [];
 
     save(mqttEvent: MqttItem): boolean {
@@ -27,4 +27,4 @@ class TestStorage implements DeviceStateStorage {
     }
 }
 
-export default new TestStorage();
+export default new TestStateStorage();

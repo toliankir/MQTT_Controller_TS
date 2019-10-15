@@ -4,13 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const mqtt_1 = require("./mqtt");
 const test_storage_1 = __importDefault(require("./test-storage"));
-mqtt_1.mqttInit();
+// mqttInit();
 const app = express_1.default();
 app.get('/', (req, res) => {
     res.send('Hello');
-    console.log(test_storage_1.default.getStorage());
+    // console.log(storage.getStorage());
 });
 app.get('/api', (req, res) => {
     res.send(JSON.stringify(test_storage_1.default.getStorage()));

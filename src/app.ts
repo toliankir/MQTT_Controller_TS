@@ -23,10 +23,11 @@ app.get('/save', async (req, res) => {
 
 });
 
-app.get('/get/:test', async (req, res) => {
+app.get('/get/:deviceId', async (req, res) => {
     // const savedItems = await archive.saveState(stateStorage.getStorage(), ['sensor']);
-    res.send(req.params);
-
+    const itemData = await archive.getByDeviceId(req.params.deviceId)
+    // console.log(itemData);
+    res.send(JSON.stringify(itemData));
 });
 
 app.get('/test', (req, res) => {

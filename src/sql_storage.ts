@@ -1,10 +1,10 @@
-import { ArchiveStoage, byDeviceIdResponse } from './storage_contract';
+import { ArchiveStoage, DeviceResponse, DeviceItem } from './storage_contract';
 import { MqttItem } from './state_contract'
 import mysql from 'mysql';
 import { MqttClient } from 'mqtt';
 
 export default new class SqlArchiveStorage implements ArchiveStoage {
-  
+
     connection: mysql.Connection;
 
     constructor() {
@@ -35,9 +35,22 @@ export default new class SqlArchiveStorage implements ArchiveStoage {
         });
     }
 
-    getByDeviceId(deviceId: String): Promise<byDeviceIdResponse> {
-        throw new Error("Method not implemented.");
+    getByDeviceId(deviceId: String): Promise<DeviceResponse> {
+        return new Promise((resolve, reject) => {
+            this.connection.query('SELECT value, UNIX_TIMESTAMP(timestamp) as timestamp FROM state_archive WHERE deviceId = ?;', [deviceId], (err, res, fields) => {
+                if (err) {
+                    console.log(err);
+                    return reject(err);
+                }
+                console.log(res);
+                return resolve({
+                    deviceId: deviceId,
+                    deviceType: res[0] ? res[0].deviceType : "",
+                    state: res.map((el: any) => {
+                        return { timestamp: el.timestamp, value: el.value };
+                    })
+                });
+            });
+        });
     }
-    
-
 }

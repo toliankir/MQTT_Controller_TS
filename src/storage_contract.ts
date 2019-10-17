@@ -1,16 +1,16 @@
 import { MqttItem } from './state_contract';
 export interface ArchiveStoage {
     saveState(mqttItems: MqttItem[], deviceType: String[]): Promise<number>
-    getByDeviceId(deviceId: String): Promise<byDeviceIdResponse>
+    getByDeviceId(deviceId: String): Promise<DeviceResponse>
 }
 
-export interface deviceItem {
+export interface DeviceItem {
     timestamp: number,
     value: number
 }
 
-export interface byDeviceIdResponse {
+export interface DeviceResponse {
     deviceId: String,
     deviceType: String,
-    state: deviceItem[]
+    state: DeviceItem[]
 }

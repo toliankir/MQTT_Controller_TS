@@ -2,7 +2,12 @@ import { DeviceStateStorage, MqttItem } from './state_contract';
 
 class TestStateStorage implements DeviceStateStorage {
     localStorage: MqttItem[] = [];
+    stateChange: Function | null = null;
 
+    onStateChange(func: Function): void {
+        this.stateChange = func;
+    }
+    
     save(mqttEvent: MqttItem): boolean {
         const eventFromStorage: MqttItem | undefined = this.localStorage.find((el) =>
             el.deviceId === mqttEvent.deviceId
@@ -12,7 +17,6 @@ class TestStateStorage implements DeviceStateStorage {
             this.localStorage.push(mqttEvent);
             return true;
         }
-
         eventFromStorage.value = mqttEvent.value;
         return true;
     }

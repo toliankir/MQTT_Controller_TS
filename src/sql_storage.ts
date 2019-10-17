@@ -1,21 +1,24 @@
 import { ArchiveStoage, DeviceResponse, DeviceItem } from './storage_contract';
 import { MqttItem } from './state_contract'
 import mysql from 'mysql';
-import { MqttClient } from 'mqtt';
 
 export default new class SqlArchiveStorage implements ArchiveStoage {
 
     connection: mysql.Connection;
 
     constructor() {
-        this.connection = mysql.createConnection({
-            host: 'localhost',
-            user: 'wm',
-            password: '1234',
-            database: 'esp'
-        });
-    }
+        if (!process.env.MYSQL_HOST || !process.env.MYSQL_USER || !process.env.MYSQL_PASSWORD || !process.env.MYSQL_DB) {
+            throw new Error('Missing arguments for MYSQL DB connection. Check .env');
+        }
 
+        this.connection = mysql.createConnection({
+            host: process.env.MYSQL_HOST,
+            user: process.env.MYSQL_USER,
+            password: process.env.MYSQL_PASSWORD,
+            database: process.env.MYSQL_DB
+        });
+
+    }
 
     saveState(mqttItems: MqttItem[], deviceType: String[]): Promise<number> {
         return new Promise((resolve, reject) => {

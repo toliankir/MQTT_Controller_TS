@@ -1,10 +1,11 @@
+require('dotenv').config();
 import express, { Application } from 'express';
 import { mqttInit } from './mqtt';
 import stateStorage from './test-storage';
 import archive from './sql_storage';
 import { runExpression } from './expression';
-mqttInit();
 
+mqttInit();
 const PORT = process.env.PORT || 5000;
 const app: Application = express();
 // const archive: ArchiveStoage = SqlArchiveStorage();
@@ -31,7 +32,6 @@ app.get('/get/:deviceId', async (req, res) => {
 });
 
 app.get('/test', (req, res) => {
-
     const testStr = 'ESP.temperature<30&ESP.humidity<50|ESP.humidity<60';
     console.log(runExpression(testStr));
     res.send('test expression');

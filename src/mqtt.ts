@@ -2,11 +2,14 @@ import mqtt from 'mqtt';
 import storage from './test-storage';
 
 export function mqttInit() {
+    if (!process.env.MQTT_PORT || !process.env.MQTT_CLIENTID || !process.env.MQTT_USERNAME || !process.env.MQTT_PASSWORD) {
+        return false;
+    }
     const mqttClient = mqtt.connect('mqtt://m13.cloudmqtt.com', {
-        port: 17447,
-        clientId: "mqtt_nodejs",
-        username: "fjwkxsvo",
-        password: "0uLbMzS4c4mr"
+        port: parseInt(process.env.MQTT_PORT),
+        clientId: process.env.MQTT_CLIENTID,
+        username: process.env.MQTT_USERNAME,
+        password: process.env.MQTT_PASSWORD
     });
 
     mqttClient.on('connect', () => {

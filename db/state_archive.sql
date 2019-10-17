@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.6.6deb5
 -- https://www.phpmyadmin.net/
 --
--- Хост: 127.0.0.1
--- Время создания: Окт 16 2019 г., 00:47
--- Версия сервера: 10.3.16-MariaDB
--- Версия PHP: 7.3.6
+-- Хост: localhost:3306
+-- Время создания: Окт 17 2019 г., 11:06
+-- Версия сервера: 10.1.41-MariaDB-0ubuntu0.18.04.1
+-- Версия PHP: 7.2.19-0ubuntu0.18.04.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -30,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `state_archive` (
   `id` int(11) NOT NULL,
-  `timestamp` time NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deviceId` varchar(128) NOT NULL,
   `deviceType` varchar(128) NOT NULL,
   `parameter` varchar(128) NOT NULL,
@@ -55,9 +53,7 @@ ALTER TABLE `state_archive`
 -- AUTO_INCREMENT для таблицы `state_archive`
 --
 ALTER TABLE `state_archive`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-COMMIT;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

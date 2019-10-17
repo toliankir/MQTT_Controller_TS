@@ -23,7 +23,7 @@ class TestStateStorage implements DeviceStateStorage {
 
     getValue(deviceId: string, parameter: string) {
         const device = this.localStorage.find(el => el.deviceId === deviceId && el.parameter === parameter);
-        return device ? device.value : null;
+        return device ? device.value : -255;
     }
 }
 

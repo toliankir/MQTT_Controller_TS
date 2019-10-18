@@ -26,10 +26,13 @@ function runCondition(srcCondition: String): boolean {
     const [device, controlValue] = srcCondition.split(/[<>=]/);
     const [deviceId, parameter] = device.split('.');
     const currentValue = stateStorage.getValue(deviceId, parameter);
-    return compare(parseInt(controlValue), condition[0], currentValue);
+    const test = compare(parseInt(controlValue), condition[0], currentValue);
+    console.log(test);
+    return test;
 }
 
 function compare(controlValue: number | boolean, condtion: String, deviceValue: number | boolean): boolean {
+    console.log(deviceValue, condtion, controlValue);
     if (condtion === '=') {
         return controlValue === deviceValue;
     }

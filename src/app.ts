@@ -32,7 +32,7 @@ app.get('/get/:deviceId', async (req, res) => {
 });
 
 app.get('/test', (req, res) => {
-    const testStr = 'ESP.temperature<30&ESP.humidity<50|ESP.humidity<60';
+    const testStr = 'ESP.temperature>20&ESP_1071504.temperature>10';
     console.log(runExpression(testStr));
     res.send('test expression');
 });

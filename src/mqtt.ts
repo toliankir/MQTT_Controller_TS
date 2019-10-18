@@ -31,7 +31,8 @@ export function mqttInit() {
                 deviceId,
                 deviceType,
                 parameter: el,
-                value: msgObj[el]
+                value: msgObj[el],
+                timestamp: Math.floor(Date.now() / 1000)
             });
         }
     });

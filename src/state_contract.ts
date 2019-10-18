@@ -10,4 +10,5 @@ export interface MqttItem {
     deviceType: string,
     parameter: string,
     value: number | boolean
+    timestamp: number
 }

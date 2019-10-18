@@ -1,14 +1,19 @@
 require('dotenv').config();
 import express, { Application } from 'express';
 import { mqttInit } from './mqtt';
-import stateStorage from './test-storage';
+import stateStorage from './state';
 import archive from './sql_storage';
 import { runExpression } from './expression';
+import { cronStart } from './cron';
+import logger from './logger';
 
 mqttInit();
+cronStart();
 const PORT = process.env.PORT || 5000;
 const app: Application = express();
 // const archive: ArchiveStoage = SqlArchiveStorage();
+// console.log(['a', 'b', 'c']);
+
 
 app.get('/', (req, res) => {
     res.send('Hello');
@@ -38,4 +43,4 @@ app.get('/test', (req, res) => {
 });
 
 
-app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
+app.listen(PORT, () => logger.log({ level: 'info', message: `Server is running on ${PORT}` }));

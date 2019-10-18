@@ -1,4 +1,4 @@
-import { DeviceStateStorage, MqttItem } from './state_contract';
+import { DeviceStateStorage, MqttItem } from './contract/state_contract';
 
 class TestStateStorage implements DeviceStateStorage {
     localStorage: MqttItem[] = [];
@@ -18,6 +18,7 @@ class TestStateStorage implements DeviceStateStorage {
             return true;
         }
         eventFromStorage.value = mqttEvent.value;
+        eventFromStorage.timestamp = mqttEvent.timestamp;
         return true;
     }
 

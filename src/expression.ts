@@ -1,4 +1,4 @@
-import stateStorage from './test-storage';
+import stateStorage from './state';
 
 export function runExpression(expression: String): boolean {
     const expressionArray = expression.split(/[&|]/);
@@ -37,10 +37,10 @@ function compare(controlValue: number | boolean, condtion: String, deviceValue: 
         return controlValue === deviceValue;
     }
     if (condtion === '<') {
-        return controlValue < deviceValue;
+        return deviceValue < controlValue;
     }
     if (condtion === '>') {
-        return controlValue > deviceValue;
+        return deviceValue > controlValue;
     }
     throw new Error(`Unknown condition ${condtion}`);
 }

@@ -1,45 +1,62 @@
 require('dotenv').config();
 import express, { Application } from 'express';
-import { mqttInit } from './mqtt';
+import { mqttInit, setRelay } from './mqtt';
 import stateStorage from './state';
 import archive from './sql_storage';
-import { runExpression } from './expression';
 import { cronStart } from './cron';
 import logger from './logger';
+import state from './state';
+import { initVirtualDevices } from './virtual_devices';
+import ruleHandler from './rule';
 
 mqttInit();
 cronStart();
+// initVirtualDevices();
+
 const PORT = process.env.PORT || 5000;
 const app: Application = express();
-// const archive: ArchiveStoage = SqlArchiveStorage();
-// console.log(['a', 'b', 'c']);
 
+ruleHandler.initRules();
+stateStorage.onStateChange(() => {
+    ruleHandler.checkAllRules();
+});
+
+const apiPrefix = '/api/v0.1/'
 
 app.get('/', (req, res) => {
     res.send('Hello');
 });
 
-app.get('/api', (req, res) => {
+app.get(`${apiPrefix}getAllDevices`, (req, res) => {
     res.send(JSON.stringify(stateStorage.getStorage()));
 });
 
-app.get('/save', async (req, res) => {
-    const savedItems = await archive.saveState(stateStorage.getStorage(), ['sensor']);
-    res.send(`Data saved ${savedItems}`);
-
+app.get(`${apiPrefix}getAllRules`, async (req, res) => {
+    res.send(JSON.stringify(await archive.getRules()));
 });
 
-app.get('/get/:deviceId', async (req, res) => {
-    // const savedItems = await archive.saveState(stateStorage.getStorage(), ['sensor']);
-    const itemData = await archive.getByDeviceId(req.params.deviceId)
-    // console.log(itemData);
-    res.send(JSON.stringify(itemData));
+app.get(`${apiPrefix}getDevice/:deviceId`, async (req, res) => {
+    res.send(JSON.stringify(await archive.getByDeviceId(req.params.deviceId)));
 });
 
-app.get('/test', (req, res) => {
-    const testStr = 'ESP.temperature>20&ESP_1071504.temperature>10';
-    console.log(runExpression(testStr));
+app.get('/test', async (req, res) => {
+    // const testStr = 'ESP_1071504.temperature>10';
+    // const ruleId = await archive.addRule(testStr, {
+    //     defaultValue: 11,
+    //     trueValue: 22,
+    //     falseValue: 0
+    // }, 'esp/relay1');
+    // console.log(ruleId);
+    // const rule = await archive.getRule(11);
+    // res.send(JSON.stringify(rule));
+    // console.log(runExpression(testStr));
+    // archive.deleteRule(9);
+    // archive.updateRule(9, '1234', 22);
+    // setRelay('ESP_12001655', 0, true);
     res.send('test expression');
+
+    // const rules = await archive.getRules();
+    //    res.send(JSON.stringify(rules));
 });
 
 

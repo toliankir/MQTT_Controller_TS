@@ -2,17 +2,17 @@ import mqtt from 'mqtt';
 import storage from './state';
 import logger from './logger';
 
-export function mqttInit() {
-    if (!process.env.MQTT_SERVER || !process.env.MQTT_PORT || !process.env.MQTT_CLIENTID || !process.env.MQTT_USERNAME || !process.env.MQTT_PASSWORD) {
-        throw new Error('MQTT connection error');
-    }
-    const mqttClient = mqtt.connect(process.env.MQTT_SERVER, {
-        port: parseInt(process.env.MQTT_PORT),
-        clientId: process.env.MQTT_CLIENTID,
-        username: process.env.MQTT_USERNAME,
-        password: process.env.MQTT_PASSWORD
-    });
+if (!process.env.MQTT_SERVER || !process.env.MQTT_PORT || !process.env.MQTT_CLIENTID || !process.env.MQTT_USERNAME || !process.env.MQTT_PASSWORD) {
+    throw new Error('MQTT connection error');
+}
+const mqttClient = mqtt.connect(process.env.MQTT_SERVER, {
+    port: parseInt(process.env.MQTT_PORT),
+    clientId: process.env.MQTT_CLIENTID,
+    username: process.env.MQTT_USERNAME,
+    password: process.env.MQTT_PASSWORD
+});
 
+export function mqttInit() {
     mqttClient.on('connect', () => {
         logger.log({
             level: 'info',
@@ -32,7 +32,16 @@ export function mqttInit() {
 
     mqttClient.on('message', (topic, message) => {
         const [deviceId, deviceType] = topic.toString().split('/');
-        const msgObj = JSON.parse(message.toString());
+        let msgObj;
+        try {
+            msgObj = JSON.parse(message.toString());
+        } catch (err) {
+            logger.log({
+                level: 'error',
+                message: `MQTT: ${err.message}`
+            });
+            return;
+        }
         logger.log({
             level: 'debug',
             message: `MQTT: Recived mqtt message: ${topic.toString()}, ${message.toString()}`
@@ -47,4 +56,17 @@ export function mqttInit() {
             });
         }
     });
+}
+
+export function setRelay(deviceId: string, relayId: number, state: boolean) {
+    const message: string = relayId + (state ? '1' : '0');
+    mqttClient.publish(`${deviceId}/set/relay`, message);
+}
+
+export function sendMessage(topic: string, message: string) {
+    logger.log({
+        level: 'info',
+        message: `MQTT: Send  ${topic} : ${message}`
+    });
+    mqttClient.publish(topic, message);
 }
